@@ -1,0 +1,21 @@
+{
+  "category_already_exists": "A Category with name '{}' already exists.",
+  "category_error_inserting": "An error occurred while inserting the Category.",
+  "category_not_found": "Category not found.",
+  "category_deleted": "Category deleted.",
+  "category_not_empty": "Can not delete '{}', category not empty.",
+
+  "room_name_company_exists": "A room with name '{}' and company '{}' already exists.",
+  "room_error_inserting": "An error occurred while inserting the room.",
+  "room_not_found": "Room not found.",
+  "room_deleted": "Room deleted.",
+  "room_created": "Room created successfully.",
+
+  "user_username_exists": "A user with that username already exists.",
+  "user_email_exists": "A user with that email already exists.",
+  "user_not_found": "User not found.",
+  "user_deleted": "User deleted.",
+  "user_invalid_credentials": "Invalid credentials!",
+  "user_logged_out": "User <id={}> successfully logged out.",
+  "user_created": "User created successfully."
+}
