@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, fresh_jwt_required
 from models.room import RoomModel
+from models.category import CategoryModel
 from schemas.room import RoomSchema
 from libs.strings import gettext
 
@@ -43,10 +44,12 @@ class RoomCreate(Resource):
             return {"message": gettext("room_name_company_exists")}, 400
 
         room = room_schema.load(room_json)
+        category = CategoryModel.find_by_id(room_json["category_id"])
+        if category:
+            try:
+                room.save_to_db()
+            except:
+                return {"message": gettext("room_error_inserting")}, 500
 
-        try:
-            room.save_to_db()
-        except:
-            return {"message": gettext("room_error_inserting")}, 500
-
-        return {"message": gettext("room_created")}, 201
+            return {"message": gettext("room_created")}, 201
+        return {"message": gettext("room_error_inserting_no_category")}, 400
