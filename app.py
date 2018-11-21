@@ -1,9 +1,8 @@
-import os
-
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
+from dotenv import load_dotenv
 
 from ma import ma
 from db import db
@@ -14,15 +13,9 @@ from resources.room import Room, RoomList, RoomCreate
 from resources.category import Category, CategoryList
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.config["JWT_BLACKLIST_ENABLED"] = True  # enable blacklist feature
-app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = [
-    "access",
-    "refresh",
-]  # allow blacklisting for access and refresh tokens
-app.secret_key = os.environ.get("APP_SECRET_KEY")
+load_dotenv(".env", verbose=True)
+app.config.from_object("default_config")
+app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 
 
@@ -54,4 +47,4 @@ api.add_resource(UserLogout, "/logout")
 if __name__ == "__main__":
     db.init_app(app)
     ma.init_app(app)
-    app.run(port=5000, debug=True)
+    app.run(port=5000)
