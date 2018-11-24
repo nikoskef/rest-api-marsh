@@ -18,5 +18,6 @@
   "user_deleted": "User deleted.",
   "user_invalid_credentials": "Invalid credentials!",
   "user_logged_out": "User <id={}> successfully logged out.",
-  "user_created": "User created successfully."
+  "user_created": "User created successfully.",
+  "admin_access_required": "Administrator access required"
 }

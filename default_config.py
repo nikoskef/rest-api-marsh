@@ -9,3 +9,4 @@ SECRET_KEY = os.environ["APP_SECRET_KEY"]
 JWT_BLACKLIST_ENABLED = True
 JWT_BLACKLIST_TOKEN_CHECKS = ["access", "refresh"]
 
+

@@ -13,6 +13,7 @@ from models.user import UserModel
 from schemas.user import UserSchema
 from blacklist import BLACKLIST
 from libs.strings import gettext
+from libs.admin import admin_required
 
 user_schema = UserSchema()
 
@@ -34,12 +35,8 @@ class UserRegister(Resource):
 
 
 class User(Resource):
-    """
-    This resource can be useful when testing our Flask app. We may not want to expose it to public users, but for the
-    sake of demonstration in this course, it can be useful when we are manipulating data regarding the users.
-    """
-
     @classmethod
+    @admin_required
     def get(cls, user_id: int):
         user = UserModel.find_by_id(user_id)
         if not user:
@@ -47,6 +44,7 @@ class User(Resource):
         return user_schema.dump(user), 200
 
     @classmethod
+    @admin_required
     def delete(cls, user_id: int):
         user = UserModel.find_by_id(user_id)
         if not user:
@@ -66,8 +64,8 @@ class UserLogin(Resource):
         # this is what the `authenticate()` function did in security.py
         if user and pbkdf2_sha512.verify(user_json['password'], user.password):
             # identity= is what the identity() function did in security.py—now stored in the JWT
-            access_token = create_access_token(identity=user.id, fresh=True)
-            refresh_token = create_refresh_token(user.id)
+            access_token = create_access_token(identity=user.username, fresh=True)
+            refresh_token = create_refresh_token(user.username)
             return {"access_token": access_token, "refresh_token": refresh_token}, 200
 
         return {"message": gettext("user_invalid_credentials")}, 401

@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import os
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
@@ -25,6 +26,13 @@ def handle_marshmallow_validation(err):
 
 
 jwt = JWTManager(app)
+
+
+@jwt.user_claims_loader
+def add_admin_to_jwt(identity):
+    if identity in os.environ["ADMINS"].split(','):
+        return {'is_admin': True}
+    return {'is_admin': False}
 
 
 # This method will check if a token is blacklisted, and will be called automatically when blacklist is enabled
