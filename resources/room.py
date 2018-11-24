@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask import request
-from flask_jwt_extended import jwt_required, fresh_jwt_required
+from flask_jwt_extended import jwt_required, fresh_jwt_required, get_jwt_claims
+
+from libs.admin import admin_required
 from models.room import RoomModel
 from models.category import CategoryModel
 from schemas.room import RoomSchema
@@ -12,6 +14,7 @@ room_list_schema = RoomSchema(many=True)
 
 class Room(Resource):
     @classmethod
+    @jwt_required
     def get(cls, _id: int):
         room = RoomModel.find_by_id(_id)
         if room:
@@ -19,7 +22,7 @@ class Room(Resource):
         return {"message": gettext("room_not_found")}, 404
 
     @classmethod
-    @jwt_required
+    @admin_required
     def delete(cls, _id: int):
         room = RoomModel.find_by_id(_id)
         if room:
@@ -36,7 +39,7 @@ class RoomList(Resource):
 
 class RoomCreate(Resource):
     @classmethod
-    @fresh_jwt_required
+    @admin_required
     def post(cls):
         room_json = request.get_json()
         room = RoomModel.find_by_name_company(room_json["name"], room_json["company"])
