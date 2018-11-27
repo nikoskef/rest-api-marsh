@@ -19,5 +19,14 @@
   "user_invalid_credentials": "Invalid credentials!",
   "user_logged_out": "User <id={}> successfully logged out.",
   "user_created": "User created successfully.",
-  "admin_access_required": "Administrator access required"
+  "admin_access_required": "Administrator access required",
+
+  "token_expired": "The token has expired",
+  "token_expired_error": "token_expired",
+  "token_invalid": "Signature verification failed.",
+  "token_invalid_error": "invalid_token",
+  "token_missing": "Request does not contain an access token.",
+  "token_missing_error": "authorization_required",
+  "token_revoked": "The token has been revoked.",
+  "token_revoked_error": "token_revoked"
 }
