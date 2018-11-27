@@ -58,7 +58,6 @@ class UserLogin(Resource):
     def post(cls):
         user_json = request.get_json()
         user_data = user_schema.load(user_json, partial=("email",))
-        print(user_data.email)
 
         user = UserModel.find_by_username(user_data.username)
 
