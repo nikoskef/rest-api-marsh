@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required, fresh_jwt_required, get_jwt_claims
+from flask_jwt_extended import jwt_required
 
 from libs.admin import admin_required
 from models.category import CategoryModel

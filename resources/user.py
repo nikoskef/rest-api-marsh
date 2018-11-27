@@ -58,12 +58,11 @@ class UserLogin(Resource):
     def post(cls):
         user_json = request.get_json()
         user_data = user_schema.load(user_json, partial=("email",))
+        print(user_data.email)
 
         user = UserModel.find_by_username(user_data.username)
 
-        # this is what the `authenticate()` function did in security.py
         if user and pbkdf2_sha512.verify(user_json['password'], user.password):
-            # identity= is what the identity() function did in security.py—now stored in the JWT
             access_token = create_access_token(identity=user.username, fresh=True)
             refresh_token = create_refresh_token(user.username)
             return {"access_token": access_token, "refresh_token": refresh_token}, 200
