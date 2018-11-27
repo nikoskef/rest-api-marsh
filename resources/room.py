@@ -44,7 +44,7 @@ class RoomCreate(Resource):
         room_json = request.get_json()
         room = RoomModel.find_by_name_company(room_json["name"], room_json["company"])
         if room:
-            return {"message": gettext("room_name_company_exists")}, 400
+            return {"message": gettext("room_name_company_exists").format(room_json['name'], room_json['company'])}, 400
 
         room = room_schema.load(room_json)
         category = CategoryModel.find_by_id(room_json["category_id"])
