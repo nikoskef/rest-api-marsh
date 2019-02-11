@@ -6,6 +6,6 @@ from models.category import CategoryModel
 class RoomSchema(ma.ModelSchema):
     class Meta:
         model = RoomModel
-        load_only = ("category",)
-        dump_only = ("id",)
+        load_only = ("category", "company")
+        dump_only = ("id", "created_at")
         include_fk = True
