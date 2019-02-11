@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
+from flask import request
 
 from libs.admin import admin_required
 from models.company import CompanyModel
@@ -10,28 +11,30 @@ company_schema = CompanySchema()
 company_list_schema = CompanySchema(many=True)
 
 
-class Category(Resource):
+class Company(Resource):
     @classmethod
     @jwt_required
     def get(cls, name: str):
-        category = CompanyModel.find_by_name(name)
-        if category:
-            return company_schema.dump(category), 200
+        company = CompanyModel.find_by_name(name)
+        if company:
+            return company_schema.dump(company), 200
         return {"message": gettext("category_not_found")}, 404
 
     @classmethod
     @admin_required
-    def post(cls, name: str):
-        if CompanyModel.find_by_name(name):
-            return {"message": gettext("category_already_exists").format(name)}, 400
+    def post(cls):
+        company_json = request.get_json()
+        company = company_schema.load(company_json)
 
-        category = CompanyModel(name=name)
+        if CompanyModel.find_by_name(company_json['name']):
+            return {"message": gettext("category_already_exists").format(company_json['name'])}, 400
+
         try:
-            category.save_to_db()
+            company.save_to_db()
         except:
             return {"message": gettext("category_error_inserting")}, 500
 
-        return company_schema.dump(category), 201
+        return company_schema.dump(company), 201
 
     @classmethod
     @admin_required

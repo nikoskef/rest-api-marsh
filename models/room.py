@@ -1,9 +1,9 @@
+from db import db
+
 from typing import Dict, List
 from datetime import datetime
 
 from models.company import CompanyModel
-
-from db import db
 
 
 class RoomModel(db.Model):
@@ -33,8 +33,8 @@ class RoomModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_by_name_company(cls, name: str, company: str) -> "RoomModel":
-        return cls.query.filter_by(name=name, company=company).first()
+    def find_by_name_company(cls, name: str, company_id: int) -> "RoomModel":
+        return cls.query.filter_by(name=name, company_id=company_id).first()
 
     @classmethod
     def get_all_rooms(cls) -> Dict[str, List['RoomModel']]:

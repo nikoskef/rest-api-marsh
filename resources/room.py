@@ -3,6 +3,7 @@ from flask import request
 from flask_jwt_extended import jwt_required
 
 from libs.admin import admin_required
+from models.company import CompanyModel
 from models.room import RoomModel
 from models.category import CategoryModel
 from schemas.room import RoomSchema
@@ -42,17 +43,23 @@ class RoomCreate(Resource):
     @admin_required
     def post(cls):
         room_json = request.get_json()
-        room = RoomModel.find_by_name_company(room_json["name"], room_json["company"])
-        if room:
-            return {"message": gettext("room_name_company_exists").format(room_json['name'], room_json['company'])}, 400
-
         room = room_schema.load(room_json)
-        category = CategoryModel.find_by_id(room_json["category_id"])
-        if category:
-            try:
-                room.save_to_db()
-            except:
-                return {"message": gettext("room_error_inserting")}, 500
 
-            return {"message": gettext("room_created")}, 201
-        return {"message": gettext("room_error_inserting_no_category")}, 400
+        category = CategoryModel.find_by_id(room_json["category_id"])
+        if not category:
+            return {"message": gettext("room_error_inserting_no_category")}, 400
+
+        company = CompanyModel.find_by_id(room_json["company_id"])
+        if not company:
+            return {"message": gettext("room_error_inserting_no_company")}, 400
+
+        room_exist = RoomModel.find_by_name_company(room_json["name"], room_json["company_id"])
+        if room_exist:
+            return {"message": gettext("room_name_company_exists").format(room_json['name'], room_json['company_id'])}, 400
+
+        try:
+            room.save_to_db()
+        except:
+            return {"message": gettext("room_error_inserting")}, 500
+
+        return {"message": gettext("room_created")}, 201
