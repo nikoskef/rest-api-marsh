@@ -1,6 +1,7 @@
+import traceback
 from flask import request
 from flask_restful import Resource
-from passlib.hash import pbkdf2_sha512
+from flask_security.utils import verify_password
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -9,6 +10,9 @@ from flask_jwt_extended import (
     jwt_required,
     get_raw_jwt,
 )
+
+from libs.sendgridmail import SendGridException
+from models.confirmation import ConfirmationModel
 from models.user import UserModel
 from schemas.user import UserSchema
 from blacklist import BLACKLIST
@@ -29,9 +33,19 @@ class UserRegister(Resource):
         if UserModel.find_by_email(user.email):
             return {"message": gettext("user_email_exists")}, 400
 
-        user.save_to_db()
-
-        return {"message": gettext("user_created")}, 201
+        try:
+            user.save_to_db()
+            confirmation = ConfirmationModel(user.id)
+            confirmation.save_to_db()
+            user.send_confirmation_email()
+            return {"message": gettext("user_registered")}, 201
+        except SendGridException as e:
+            user.delete_from_db()
+            return {"message": str(e)}, 500
+        except:
+            traceback.print_exc()
+            user.delete_from_db()
+            return {"message": gettext("user_error_creating")}, 500
 
 
 class User(Resource):
@@ -61,10 +75,13 @@ class UserLogin(Resource):
 
         user = UserModel.find_by_username(user_data.username)
 
-        if user and pbkdf2_sha512.verify(user_json['password'], user.password):
-            access_token = create_access_token(identity=user.username, fresh=True)
-            refresh_token = create_refresh_token(user.username)
-            return {"access_token": access_token, "refresh_token": refresh_token}, 200
+        if user and verify_password(user_json['password'], user.password):
+            confirmation = user.most_recent_confirmation
+            if confirmation and confirmation.confirmed:
+                access_token = create_access_token(identity=user.username, fresh=True)
+                refresh_token = create_refresh_token(user.username)
+                return {"access_token": access_token, "refresh_token": refresh_token}, 200
+            return {"message": gettext("user_not_confirmed").format(user.email)}, 400
 
         return {"message": gettext("user_invalid_credentials")}, 401
 

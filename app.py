@@ -1,24 +1,72 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, url_for
 import os
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
+#from flask_uploads import configure_uploads, patch_request_class
 from dotenv import load_dotenv
+from flask_admin import Admin
+
+from admin.modelview import MyModelView
+from flask_security import Security, SQLAlchemyUserDatastore
+from flask_admin import helpers as admin_helpers
+from flask_security.forms import LoginForm
+
+from wtforms import StringField
+from wtforms.validators import InputRequired
+
 
 from ma import ma
 from db import db
 from blacklist import BLACKLIST
+
+
 from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogout
 from resources.room import Room, RoomList, RoomCreate
+from resources.confirmation import Confirmation, ConfirmationByUser
+from resources.category import Category, CategoryList
+from models.user import UserModel
+from models.company import CompanyModel
+from models.room import RoomModel
+from models.roles import Role
+from models.category import CategoryModel
+from models.confirmation import ConfirmationModel
+
+from admin.confirmation import ConfirmationView
+from admin.user import UserView
+from admin.room import RoomView
 from libs.strings import gettext
 
-from resources.category import Category, CategoryList
 
 app = Flask(__name__)
 load_dotenv(".env", verbose=True)
 app.config.from_object("default_config")
 app.config.from_envvar("APPLICATION_SETTINGS")
+
+
+class ExtendedLoginForm(LoginForm):
+    email = StringField('Username', [InputRequired()])
+
+
+user_datastore = SQLAlchemyUserDatastore(db, UserModel, Role)
+security = Security(app, user_datastore, login_form=ExtendedLoginForm)
+
 api = Api(app)
+
+
+@security.context_processor
+def security_context_processor():
+    return dict(
+        admin_base_template=admin.base_template,
+        admin_view=admin.index_view,
+        h=admin_helpers,
+        get_url=url_for
+    )
+
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 @app.errorhandler(ValidationError)
@@ -27,6 +75,12 @@ def handle_marshmallow_validation(err):
 
 
 jwt = JWTManager(app)
+admin = Admin(
+    app,
+    name='Admin',
+    base_template='my_master.html',
+    template_mode='bootstrap3'
+)
 
 
 @jwt.user_claims_loader
@@ -84,6 +138,17 @@ api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
+api.add_resource(Confirmation, "/user_confirmation/<string:confirmation_id>")
+api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
+
+
+admin.add_view(UserView(UserModel, db.session))
+admin.add_view(RoomView(RoomModel, db.session))
+admin.add_view(MyModelView(CategoryModel, db.session))
+admin.add_view(ConfirmationView(ConfirmationModel, db.session))
+admin.add_view(MyModelView(CompanyModel, db.session))
+admin.add_view(MyModelView(Role, db.session))
+
 
 if __name__ == "__main__":
     db.init_app(app)

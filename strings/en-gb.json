@@ -1,4 +1,14 @@
 {
+  "mailgun_failed_load_api_key": "Failed to load MailGun API key.",
+  "mailgun_failed_load_domain": "Failed to load MailGun domain.",
+  "mailgun_error_send_email": "Error in sending confirmation email, user registration failed.",
+
+  "confirmation_not_found": "Confirmation reference not found.",
+  "confirmation_link_expired": "The link has expired.",
+  "confirmation_already_confirmed": "Registration has already been confirmed.",
+  "confirmation_resend_fail": "Internal server error. Failed to resend confirmation email.",
+  "confirmation_resend_successful": "E-mail confirmation successfully re-sent.",
+
   "category_already_exists": "A Category with name '{}' already exists.",
   "category_error_inserting": "An error occurred while inserting the Category.",
   "category_not_found": "Category not found.",
@@ -17,8 +27,14 @@
   "user_not_found": "User not found.",
   "user_deleted": "User deleted.",
   "user_invalid_credentials": "Invalid credentials!",
+  "user_password_validation_error": "Password must be between 8-30 characters",
+  "user_email_validation_error": "Invalid Email format",
   "user_logged_out": "User <id={}> successfully logged out.",
   "user_created": "User created successfully.",
+  "user_confirmed": "User Confirmed.",
+  "user_not_confirmed": "User not confirmed registration, check email <{}>.",
+  "user_error_creating": "Internal Server Error. Failed to create user.",
+  "user_registered": "Account created successfully, an email with an activation link has been sent to your email address, please check.",
   "admin_access_required": "Administrator access required",
 
   "token_expired": "The token has expired",
@@ -28,5 +44,13 @@
   "token_missing": "Request does not contain an access token.",
   "token_missing_error": "authorization_required",
   "token_revoked": "The token has been revoked.",
-  "token_revoked_error": "token_revoked"
+  "token_revoked_error": "token_revoked",
+
+  "image_uploaded": "Image '{}' uploaded.",
+  "image_illegal_extension": "Extension '{}' is not allowed.",
+  "image_illegal_file_name": "Illegal filename '{}' requested.",
+  "image_not_found": "Image '{}' not found.",
+  "image_deleted": "Image '{}' deleted.",
+  "image_delete_failed": "Internal server error! Failed to delete image."
+
 }
