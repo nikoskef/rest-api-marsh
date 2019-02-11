@@ -29,7 +29,6 @@ class Company(Resource):
         if CompanyModel.find_by_name(company_json['name']):
             return {"message": gettext("category_already_exists").format(company_json['name'])}, 400
 
-
         try:
             company.save_to_db()
         except:

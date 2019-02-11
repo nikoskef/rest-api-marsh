@@ -6,8 +6,6 @@ from datetime import datetime
 from models.company import CompanyModel
 
 
-
-
 class RoomModel(db.Model):
     __tablename__ = 'rooms'
 

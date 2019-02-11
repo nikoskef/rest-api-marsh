@@ -74,6 +74,7 @@ def create_tables():
     #
     # db.session.commit()
 
+
 @app.errorhandler(ValidationError)
 def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400

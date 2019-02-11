@@ -20,8 +20,9 @@
   "room_not_found": "Room not found.",
   "room_deleted": "Room deleted.",
   "room_created": "Room created successfully.",
-  "room_error_inserting_no_category": "Can not create room, category does not exists. Category has to be created first.",
   "room_error_inserting_no_company": "Can not create room, company does not exists. Company has to be created first.",
+  "room_error_inserting_no_category": "Can not create room, category does not exists. Category has to be created first.",
+
 
   "user_username_exists": "A user with that username already exists.",
   "user_email_exists": "A user with that email already exists.",
