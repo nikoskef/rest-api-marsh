@@ -1,7 +1,7 @@
 import os
 
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = "sqlite:///data.db"
+SQLALCHEMY_DATABASE_URI = "postgres://lugezyrk:qAbvhrmnLdVChTZBCYKXEPjI1iFKViwT@elmer.db.elephantsql.com:5432/lugezyrk"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 PROPAGATE_EXCEPTIONS = True
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]

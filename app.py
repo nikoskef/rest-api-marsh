@@ -25,6 +25,7 @@ from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogo
 from resources.room import Room, RoomList, RoomCreate
 from resources.confirmation import Confirmation, ConfirmationByUser
 from resources.category import Category, CategoryList
+from resources.company import Company
 from models.user import UserModel
 from models.company import CompanyModel
 from models.room import RoomModel
@@ -68,6 +69,10 @@ def security_context_processor():
 def create_tables():
     db.create_all()
 
+    # user_datastore.find_or_create_role(name='superuser', description='Administrator')
+    # user_datastore.add_role_to_user(os.environ["ADMINS_EMAIL"], 'superuser')
+    #
+    # db.session.commit()
 
 @app.errorhandler(ValidationError)
 def handle_marshmallow_validation(err):
@@ -133,6 +138,7 @@ api.add_resource(CategoryList, "/categories")
 api.add_resource(Room, '/room/<int:_id>')
 api.add_resource(RoomCreate, '/room/create')
 api.add_resource(RoomList, '/rooms')
+api.add_resource(Company, "/company", "/company/<int:_id>")
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")
