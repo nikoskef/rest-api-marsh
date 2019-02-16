@@ -18,7 +18,7 @@ class Company(Resource):
         company = CompanyModel.find_by_name(name)
         if company:
             return company_schema.dump(company), 200
-        return {"message": gettext("category_not_found")}, 404
+        return {"message": gettext("company_not_found")}, 404
 
     @classmethod
     @admin_required
@@ -27,30 +27,30 @@ class Company(Resource):
         company = company_schema.load(company_json)
 
         if CompanyModel.find_by_name(company_json['name']):
-            return {"message": gettext("category_already_exists").format(company_json['name'])}, 400
+            return {"message": gettext("company_already_exists").format(company_json['name'])}, 400
 
         try:
             company.save_to_db()
         except:
-            return {"message": gettext("category_error_inserting")}, 500
+            return {"message": gettext("company_error_inserting")}, 500
 
         return company_schema.dump(company), 201
 
     @classmethod
     @admin_required
     def delete(cls, name: str):
-        category = CompanyModel.find_by_name(name)
-        if category:
+        company = CompanyModel.find_by_name(name)
+        if company:
             try:
-                category.delete_from_db()
-                return {"message": gettext("category_deleted")}, 200
+                company.delete_from_db()
+                return {"message": gettext("company_deleted")}, 200
             except:
-                return{"message": gettext("category_not_empty").format(name)}, 400
-        return {"message": gettext("category_not_found")}, 404
+                return{"message": gettext("company_not_empty").format(name)}, 400
+        return {"message": gettext("company_not_found")}, 404
 
 
-class CategoryList(Resource):
+class CompanyList(Resource):
     @classmethod
     @jwt_required
     def get(cls):
-        return {"categories": company_list_schema.dump(CompanyModel.find_all())}, 200
+        return {"companies": company_list_schema.dump(CompanyModel.find_all())}, 200

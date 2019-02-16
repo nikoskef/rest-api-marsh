@@ -25,7 +25,7 @@ from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogo
 from resources.room import Room, RoomList, RoomCreate
 from resources.confirmation import Confirmation, ConfirmationByUser
 from resources.category import Category, CategoryList
-from resources.company import Company
+from resources.company import Company, CompanyList
 from models.user import UserModel
 from models.company import CompanyModel
 from models.room import RoomModel
@@ -139,7 +139,8 @@ api.add_resource(CategoryList, "/categories")
 api.add_resource(Room, '/room/<int:_id>')
 api.add_resource(RoomCreate, '/room/create')
 api.add_resource(RoomList, '/rooms')
-api.add_resource(Company, "/company", "/company/<int:_id>")
+api.add_resource(Company, "/company", "/company/<string:name>")
+api.add_resource(CompanyList, "/companies")
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")

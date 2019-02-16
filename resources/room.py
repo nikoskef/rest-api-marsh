@@ -43,6 +43,7 @@ class RoomCreate(Resource):
     @admin_required
     def post(cls):
         room_json = request.get_json()
+        print(room_json)
         room = room_schema.load(room_json)
 
         category = CategoryModel.find_by_id(room_json["category_id"])
