@@ -11,8 +11,8 @@ class RoomModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
-    description = db.Column(db.String(1200))
-    difficulty = db.Column(db.String(20))
+    description = db.Column(db.String(1200), nullable=False)
+    difficulty = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     duration = db.Column(db.String(30), nullable=False)
     is_active = db.Column(db.Boolean)

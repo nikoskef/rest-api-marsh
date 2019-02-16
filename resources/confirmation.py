@@ -56,7 +56,6 @@ class ConfirmationByUser(Resource):
             }
         )
 
-
     @classmethod
     def post(cls, user_id: int):
         """Resend conirmation email"""
