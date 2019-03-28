@@ -15,7 +15,7 @@ class RoomModel(db.Model):
     difficulty = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     duration = db.Column(db.String(30), nullable=False)
-    is_active = db.Column(db.Boolean)
+    is_active = db.Column(db.Boolean, default=False)
 
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     category = db.relationship("CategoryModel")

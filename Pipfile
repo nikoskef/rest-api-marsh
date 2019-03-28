@@ -8,7 +8,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 flask-restful = "*"
 flask-jwt-extended = "*"
-marshmallow = "==3.0.0b20"
+marshmallow = "==3.0.0rc4"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 passlib = "*"
@@ -21,6 +21,7 @@ flask-admin = "*"
 wtforms = "*"
 python-http-client = "*"
 sendgrid = "*"
+"pillow" = "*"
 
 [dev-packages]
 
