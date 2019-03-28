@@ -10,7 +10,7 @@ class SendGridException(Exception):
 
 
 class SendGridMail:
-    SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+    SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
     FROM_EMAIL = Email("info@rooms-escape.com")
     SUBJECT = "Welcome to Escape Rooms"
 
