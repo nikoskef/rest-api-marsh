@@ -20,14 +20,14 @@ app.config.from_envvar("APPLICATION_SETTINGS")
 api = Api(app)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-    # user_datastore.find_or_create_role(name='superuser', description='Administrator')
-    # user_datastore.add_role_to_user(os.environ["ADMINS_EMAIL"], 'superuser')
-    #
-    # db.session.commit()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
+#
+#     # user_datastore.find_or_create_role(name='superuser', description='Administrator')
+#     # user_datastore.add_role_to_user(os.environ["ADMINS_EMAIL"], 'superuser')
+#     #
+#     # db.session.commit()
 
 
 @app.errorhandler(ValidationError)
